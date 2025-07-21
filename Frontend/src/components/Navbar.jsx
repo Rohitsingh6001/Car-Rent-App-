@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { assets, menuLinks } from "../assets/assets.js";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = ({ setShowLogin }) => {
   const location = useLocation();
