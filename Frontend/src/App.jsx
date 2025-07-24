@@ -34,7 +34,7 @@ const App = () => {
           <Route path='manage-bookings' element={<ManageBookings/>}/>
         </Route>
       </Routes>
-      
+      <Footer/>
 
     </>
   )

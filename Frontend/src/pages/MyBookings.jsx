@@ -41,7 +41,7 @@ const MyBookings = () => {
                 {booking.car.brand} {booking.car.model}
               </p>
               <p className="text-gray-500">
-                {booking.car.year} ● {booking.car.category} ●{" "}
+                {booking.car.year} ● {booking.car.category} ● {" "}
                 {booking.car.location}
               </p>
             </div>
