@@ -3,9 +3,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
-
 export const AppContext = createContext();
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const AppProvide = ({ children }) => {
   const navigate = useNavigate();
@@ -95,9 +94,8 @@ export const AppProvide = ({ children }) => {
     };
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
   };
-
- 
 };
- export const useAppContext = () => {
-    return useContext(AppContext);
+
+export const useAppContext = () => {
+  return useContext(AppContext);
 };
