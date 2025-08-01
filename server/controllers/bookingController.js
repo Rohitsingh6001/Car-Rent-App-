@@ -57,7 +57,7 @@ export const createBooking = async (req, res)=>{
           res.json({ success: true, message: "Booking Created"});
      } catch (e) {
          console.log(e.message);
-         res.json({success:false , message:e.message});
+         res.json({success:false , message:"Create Booking failed"});
      }
 }
 
@@ -70,7 +70,7 @@ export const getUserBookings = async(req , res)=>{
            res.json({success:true , bookings});
      }catch(e){
           console.log(e.message);
-         res.json({success:false , message:e.message});
+         res.json({success:false , message:"List user booking failed"});
      }
 }
 
@@ -84,7 +84,7 @@ export const getOwnerBookings = async (req , res) =>{
        res.json({success:true , bookings});
     }catch(e){
         console.log(e.message);
-         res.json({success:false , message:e.message});
+         res.json({success:false , message:"Owners bookins"});
     }
 }
 
@@ -103,6 +103,6 @@ export const changeBookingStatus = async (req , res) =>{
        res.json({success : true , message:"Status updated"});
     }catch(e){
         console.log(e.message);
-         res.json({success:false , message:e.message});
+         res.json({success:false , message:"status change failed"});
     }
 }

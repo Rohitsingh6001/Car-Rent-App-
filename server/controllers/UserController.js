@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
+import Cars from "../../Frontend/src/pages/Cars.jsx";
 
 
 const generateToken = (userId) => {
@@ -28,7 +29,7 @@ export const registerUser = async (req, res) => {
           res.json({ success: true, token });
      } catch (e) {
           console.log(error.message);
-          return res.json({ success: false, message: error.message });
+          return res.json({ success: false, message: "register failed" });
      }
 }
 
@@ -48,7 +49,7 @@ export const loginUser = async (req, res) => {
           res.json({ success: true, token });
      } catch (e) {
           console.log(error.message);
-          return res.json({ success: false, message: error.message });
+          return res.json({ success: false, message: "Login failed" });
      }
 }
 
@@ -59,6 +60,17 @@ export const getUserData = async (req, res) => {
           const { user } = req;
           res.json({ success: true, user })
      } catch (error) {
-          return res.json({ success: false, message: error.message });
+          return res.json({ success: false, message: "User data failed" });
+     }
+}
+
+// get all cars for front end
+
+export const getCar = async (req, res) => {
+     try {
+          const cars = await Cars.find({isAvaliable:true});
+          res.json({success:true , cars});
+     } catch (error) {
+          return res.json({ success: false, message:"cars not show in frontend failed" });
      }
 }

@@ -1,4 +1,4 @@
-import { log } from "console";
+
 import imagekit from "../configs/imageKit.js";
 import Car from "../models/Car.js";
 import User from "../models/User.js";
@@ -11,10 +11,10 @@ export const changeRoleToOwner = async (req , res) =>{
      try{
           const {_id} = req.user;
           await User.findByIdAndUpdate(_id , {role:"owner"});
-          res.json({success:true , message:"You can list cars"})
+          res.json({success:true , message:"You can able to  add own cars"})
      }catch(e){
           console.log(e.message)
-         res.json({success:false , message:e.message});
+         res.json({success:false , message:'Role changed failed'});
      }
 }
 
@@ -49,7 +49,7 @@ export const addCar = async(req , res) =>{
 
      }catch(e){
           console.log(e.message);
-          res.json({success:false , message:e.message});
+          res.json({success:false , message:"Add list cars failed"});
      }
 }
 
@@ -61,7 +61,7 @@ export const getOwnerCars = async (req ,res) =>{
           res.json({success : true , cars});
      }catch(e){
           console.log(e.message);
-          res.json({success:false , message:e.message});
+          res.json({success:false , message:"Owner cars listed failed"});
      }
 }
 
@@ -79,7 +79,7 @@ export const toggleCarAvailability = async (req , res) =>{
           res.json({success : true , message:"Availability toggled"});
      }catch(e){
           console.log(e.message);
-          res.json({success:false , message:e.message});
+          res.json({success:false , message:"toggle car available failed"});
      }
 }
 
@@ -99,7 +99,7 @@ export const deleteCar = async (req , res) =>{
           res.json({success : true , message:"Car removed"});
      }catch(e){
           console.log(e.message);
-          res.json({success:false , message:e.message});
+          res.json({success:false , message:"delete failed"});
      }
 }
 
@@ -132,7 +132,7 @@ export const getDashboardData = async(req , res) =>{
 
      }catch(e){
          console.log(e.message);
-         res.json({success:false , message: e.message});
+         res.json({success:false , message: "Dashboad failed"});
      }
 }
 
