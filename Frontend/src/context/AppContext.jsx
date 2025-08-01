@@ -12,7 +12,7 @@ export const AppProvide = ({ children }) => {
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [isOwner, setIsOwner] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -24,8 +24,8 @@ export const AppProvide = ({ children }) => {
     try {
       const { data } = await axios.get("/api/user/data");
       if (data.success) {
-        setUser(data);
-        setIsOwner(data.user.role === "owner");
+        setUser(data.user)
+        setIsOwner(data.user.role === 'owner');
       } else {
         navigate("/");
       }
@@ -42,59 +42,60 @@ export const AppProvide = ({ children }) => {
     } catch (error) {
       toast.error(error.message);
     }
+  };
 
-    // log out the user
+  // log out the user
 
-    const logout = () => {
-      localStorage.removeItem("token");
-      setToken(null);
-      setUser(null);
-      setIsOwner(false);
-      axios.defaults.headers.common["Authorization"] = "";
-      toast.success("You have been logged out");
-    };
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+    setUser(null);
+    setIsOwner(false);
+    axios.defaults.headers.common["Authorization"] = '';
+    toast.success("You have been logged out");
+  };
 
-    // useEffect to the token from localStorage
+  // useEffect to the token from localStorage
 
-    useEffect(() => {
-      const token = localStorage.getItem("token");
-      setToken(token);
-      fetchCars();
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setToken(token);
+    fetchCars();
+  }, []);
 
-    //fetch user data when token is available
-    useEffect(() => {
-      if (token) {
-        axios.defaults.headers.common["Authorization"] = `${token}`;
-        fetchUser();
-      }
-    }, [token]);
+  //fetch user data when token is available
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `${token}`;
+      fetchUser();
+    }
+  }, [token]);
 
-    const value = {
-      navigate,
-      currency,
-      axios,
-      user,
-      setUser,
-      token,
-      setToken,
-      isOwner,
-      setIsOwner,
-      fetchUser,
-      showLogin,
-      setShowLogin,
-      logout,
-      fetchCars,
-      cars,
-      setCars,
-      pickupDate,
-      setPickupDate,
-      returnDate,
-      setReturnDate,
+const value = {
+    navigate,
+    currency,
+    axios,
+    user,
+    setUser,
+    token,
+    setToken,
+    isOwner,
+    setIsOwner,
+    fetchUser,
+    showLogin,
+    setShowLogin,
+    logout,
+    fetchCars,
+    cars,
+    setCars,
+    pickupDate,
+    setPickupDate,
+    returnDate,
+    setReturnDate,
     };
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-  };
-};
+  }
+
 
 export const useAppContext = () => {
   return useContext(AppContext);

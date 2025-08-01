@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Title from "../../components/owner/Title";
 import { assets } from "../../assets/assets";
+import { useActionData } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const AddCar = () => {
-  const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, currency } = useAppContext();
 
   const [image, setImage] = useState("");
   const [car, setCar] = useState({
@@ -19,8 +22,43 @@ const AddCar = () => {
     description: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (isLoading) {
+      return null;
+    }
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("carData", JSON.stringify(car));
+
+      const { data } = await axios.post("/api/owner/add-car", formData);
+      if (data.success) {
+        toast.success(data.message);
+        setImage(null);
+        setCar({
+          brand: "",
+          model: "",
+          year: 0,
+          pricePerDay: 0,
+          category: "",
+          transmission: "",
+          fuel_type: "",
+          seating_capacity: 0,
+          location: "",
+          description: "",
+        });
+      }else{
+        toast.error(error.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }finally{
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -147,7 +185,7 @@ const AddCar = () => {
               <option value="Hybrid">Hybrid</option>
             </select>
           </div>
-           <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full">
             <label htmlFor="">Seating Capacity</label>
             <input
               type="number"
@@ -155,7 +193,9 @@ const AddCar = () => {
               required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none "
               value={car.seating_capacity}
-              onChange={(e) => setCar({ ...car, seating_capacity: e.target.value })}
+              onChange={(e) =>
+                setCar({ ...car, seating_capacity: e.target.value })
+              }
             />
           </div>
         </div>
@@ -178,9 +218,10 @@ const AddCar = () => {
           </div>
 
           {/* car description  */}
-           <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full">
             <label htmlFor="">Description</label>
-            <textarea rows={5}
+            <textarea
+              rows={5}
               placeholder="e.g A Luxurious Suv with a spacious interior and a powerfull engine."
               required
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none "
@@ -188,7 +229,9 @@ const AddCar = () => {
               onChange={(e) => setCar({ ...car, description: e.target.value })}
             ></textarea>
           </div>
-          <button className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer"><img src={assets.tick_icon} alt="" /> List Your Car</button>
+          <button className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer">
+            <img src={assets.tick_icon} alt="" /> {isLoading ?'Listing...': 'List Your Car'}
+          </button>
         </div>
       </form>
     </div>

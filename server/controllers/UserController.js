@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
-import Cars from "../../Frontend/src/pages/Cars.jsx";
+import Car from "../models/Car.js";
 
 
 const generateToken = (userId) => {
@@ -13,7 +13,7 @@ const generateToken = (userId) => {
 export const registerUser = async (req, res) => {
      try {
           const { name, email, password } = req.body;
-          if (!name || !email || !password) {
+          if (!name || !email || !password ) {
                return res.json({ success: false, message: "Fill all the Inputs" });
           }
           const userExists = await User.findOne({ email });
@@ -68,7 +68,7 @@ export const getUserData = async (req, res) => {
 
 export const getCar = async (req, res) => {
      try {
-          const cars = await Cars.find({isAvaliable:true});
+          const cars = await Car.find({isAvaliable:true});
           res.json({success:true , cars});
      } catch (error) {
           return res.json({ success: false, message:"cars not show in frontend failed" });

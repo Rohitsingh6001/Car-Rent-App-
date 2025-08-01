@@ -118,7 +118,7 @@ export const getDashboardData = async(req , res) =>{
           const pendingBookings = await Booking.find({owner: _id , status: "pending"});
           const completeBookings = await Booking.find({owner: _id , status: "confirmed"});
 
-          const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'confirmed').reduce((acc + booking.price, 0));
+          const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'confirmed').reduce((acc , booking) => acc +booking.price,0);
 
           const dashboadData = {
                totalCars : cars.length,
