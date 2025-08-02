@@ -112,27 +112,28 @@ export const getDashboardData = async(req , res) =>{
                return res.json({success : false, message:"Unauthrized"});
           }
 
-          const cars = await Car.find ({owner : _id});
+          const cars = await Car.find({owner: _id});
           const bookings = await Booking.find({owner:_id}).populate('car').sort({createdAt:-1});
 
           const pendingBookings = await Booking.find({owner: _id , status: "pending"});
-          const completeBookings = await Booking.find({owner: _id , status: "confirmed"});
+          const completedBookings = await Booking.find({owner: _id , status: "confirmed"});
 
-          const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'confirmed').reduce((acc , booking) => acc +booking.price,0);
+          const monthlyRevenue = bookings.slice().filter(booking => booking.status === 'confirmed').reduce((acc , booking) => acc + booking.price,0);
 
-          const dashboadData = {
+          const dashboardData = {
                totalCars : cars.length,
                totalBookings:bookings.length,
                pendingBookings:pendingBookings.length,
-               completeBookings:completeBookings.length,
+               completeBookings:completedBookings.length,
                recentBooking:bookings.slice(0,3),
                monthlyRevenue
           }
-          res.json({success:true , dashboadData});
+
+          res.json({success:true , dashboardData});
 
      }catch(e){
          console.log(e.message);
-         res.json({success:false , message: "Dashboad failed"});
+         res.json({success:false , message: "Dashboad data failed"});
      }
 }
 

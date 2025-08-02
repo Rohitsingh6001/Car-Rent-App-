@@ -51,12 +51,12 @@ const AddCar = () => {
           location: "",
           description: "",
         });
-      }else{
-        toast.error(error.message)
+      } else {
+        toast.error(error.message);
       }
     } catch (error) {
-      toast.error(error.message)
-    }finally{
+      toast.error(error.message);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -230,7 +230,8 @@ const AddCar = () => {
             ></textarea>
           </div>
           <button className="flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer">
-            <img src={assets.tick_icon} alt="" /> {isLoading ?'Listing...': 'List Your Car'}
+            <img src={assets.tick_icon} alt="" />{" "}
+            {isLoading ? "Listing..." : "List Your Car"}
           </button>
         </div>
       </form>

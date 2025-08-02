@@ -3,8 +3,9 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
+
 export const AppContext = createContext();
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const AppProvide = ({ children }) => {
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ export const AppProvide = ({ children }) => {
   // useEffect to the token from localStorage
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
+    const token = localStorage.getItem('token')
+     setToken(token);
     fetchCars();
   }, []);
 

@@ -6,14 +6,31 @@ import { useAppContext } from "../context/AppContext";
 
 const CarDetails = () => {
   const { id } = useParams();
-  const {cars , axios , pickupDate , setPickupDate , returnDate , setReturnDate} = useAppContext(); 
+  const { cars, axios, pickupDate, setPickupDate, returnDate, setReturnDate } =
+    useAppContext();
   const navigate = useNavigate();
   const [car, setCar] = useState(null);
   const currency = import.meta.env.VITE_CURRENCY;
 
-  const handleSubmit = async (e)=>{
-      e.preventDefault();
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/bookings/create", {
+        car: id,
+        pickupDate,
+        returnDate,
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/my-bookings");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     setCar(dummyCarData.find((car) => car._id === id));
@@ -99,7 +116,10 @@ const CarDetails = () => {
         </div>
 
         {/* Right : Booking Form  */}
-        <form onSubmit={handleSubmit} className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500">
+        <form
+          onSubmit={handleSubmit}
+          className="shadow-lg h-max sticky top-18 rounded-xl p-6 space-y-6 text-gray-500"
+        >
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
             {currency} {car.pricePerDay}
             <span className="text-base text-gray-400 font-normal">Per day</span>
@@ -129,7 +149,9 @@ const CarDetails = () => {
           <button className="w-full bg-primary hover:bg-primary-dull transition-all py-3 font-medium text-white rounded-xl cursor-pointer">
             Book Now
           </button>
-          <p className="text-center text-sm">No credit card required to reserve</p>
+          <p className="text-center text-sm">
+            No credit card required to reserve
+          </p>
         </form>
       </div>
     </div>

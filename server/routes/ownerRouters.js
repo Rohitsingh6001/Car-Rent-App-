@@ -11,7 +11,8 @@ ownerRouter.post("/add-car" , upload.single("image") ,protect, addCar);
 ownerRouter.get("/cars"  ,protect, getOwnerCars);
 ownerRouter.post("/cars"  ,protect, toggleCarAvailability);
 ownerRouter.post("/toggle-car"  ,protect, deleteCar);
+
 ownerRouter.get("/dashboard" , protect , getDashboardData);
-ownerRouter.post('/update-image' , upload.single('image' , protect , updateUserImage));
+ownerRouter.post('/update-image' , upload.single('image') , protect , updateUserImage);
 
 export default ownerRouter;

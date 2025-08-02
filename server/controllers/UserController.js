@@ -13,7 +13,7 @@ const generateToken = (userId) => {
 export const registerUser = async (req, res) => {
      try {
           const { name, email, password } = req.body;
-          if (!name || !email || !password ) {
+          if (!name || !email || !password || password.length < 8 ) {
                return res.json({ success: false, message: "Fill all the Inputs" });
           }
           const userExists = await User.findOne({ email });
