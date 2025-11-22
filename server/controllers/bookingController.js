@@ -115,3 +115,62 @@ export const changeBookingStatus = async (req, res)=>{
         res.json({success: false, message: error.message})
     }
 }
+
+// API to Remove car from User
+export const removeCarFromUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookingId = req.params.bookingId;
+
+    const booking = await Booking.findById(bookingId);
+
+    if (!booking) {
+      return res.json({ success: false, message: "Booking not found" });
+    }
+
+    // Only user who booked can remove
+    if (booking.user.toString() !== userId.toString()) {
+      return res.json({ success: false, message: "Unauthorized" });
+    }
+
+    // Only pending bookings can be cancelled
+    if (booking.status !== "pending") {
+      return res.json({
+        success: false,
+        message: "Booking cannot be cancelled after confirmation"
+      });
+    }
+
+    // Update status
+    booking.status = "cancelled";
+    await booking.save();
+
+    return res.json({
+      success: true,
+      message: "Booking cancelled successfully"
+    });
+
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+// PUT: Payment on cash
+ export const payOnCash = async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.bookingId);
+
+    if (!booking) {
+      return res.json({ success: false, message: "Booking not found" });
+    }
+
+    booking.status = "confirmed";
+    await booking.save();
+
+    res.json({ success: true, message: "Payment marked as paid" });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
+
+

@@ -23,6 +23,38 @@ const MyBookings = () => {
     }
   };
 
+  const deleteCar = async (bookingId) => {
+    try {
+      const { data } = await axios.delete(
+        `/api/bookings/removecar/${bookingId}`
+      );
+
+      if (data.success) {
+        toast.success("Booking cancelled");
+        fetchMyBookings(); // refresh UI after cancel
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const payOnCash = async (bookingId) => {
+    try {
+      const { data } = await axios.put(`/api/pay/payOnCash/${bookingId}`);
+
+      if (data.success) {
+        toast.success("Payment on Cash");
+        fetchMyBookings();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     user && fetchMyBookings();
   }, [user]);
@@ -124,6 +156,28 @@ const MyBookings = () => {
                 </h1>
                 <p>Booked on {booking.createdAt.split("T")[0]}</p>
               </div>
+            </div>
+
+            <div className="flex gap-3">
+              {/* Cancel Booking button */}
+              {booking.status === "pending" && (
+                <button
+                  onClick={() => deleteCar(booking._id)}
+                  className="px-4 py-2 bg-red-500 text-white rounded-md font-semibold hover:bg-red-700 transition"
+                >
+                  Cancel 
+                </button>
+              )}
+
+              {/* Payment button */}
+              {booking.status === "pending" && (
+                <button
+                  onClick={() => handlePayment(booking._id)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-700 transition"
+                >
+                  Payment
+                </button>
+              )}
             </div>
           </motion.div>
         ))}
